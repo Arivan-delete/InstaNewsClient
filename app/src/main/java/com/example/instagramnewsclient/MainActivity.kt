@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.instagramnewsclient.ui.theme.InstagramNewsClientTheme
+import com.example.instagramnewsclient.ui.theme.MainScreen
 import com.example.instagramnewsclient.ui.theme.PostCard
 
 class MainActivity : ComponentActivity() {
@@ -22,15 +23,15 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             InstagramNewsClientTheme {
-                // A surface container using the 'background' color from the theme
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(MaterialTheme.colorScheme.background)
-                        .padding(8.dp)
-                ) {
-                    PostCard()
-                }
+//                Box(
+//                    modifier = Modifier
+//                        .fillMaxSize()
+//                        .background(MaterialTheme.colorScheme.background)
+//                        .padding(8.dp)
+//                ) {
+//                    PostCard()
+//                }
+                MainScreen()
             }
         }
     }
