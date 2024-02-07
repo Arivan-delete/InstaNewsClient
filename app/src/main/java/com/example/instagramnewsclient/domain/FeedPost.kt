@@ -3,6 +3,7 @@ package com.example.instagramnewsclient.domain
 import com.example.instagramnewsclient.R
 
 data class FeedPost(
+    val id: Int = 0,
     val commName: String = "/dev/null",
     val publicationDate: String = "14:00",
     val avatarResId: Int = R.drawable.post_comunity_thumbnail,

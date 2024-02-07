@@ -1,38 +1,32 @@
 package com.example.instagramnewsclient.ui.theme
 
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.FloatingActionButtonDefaults
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.DismissDirection
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.NavigationBarItemColors
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarDuration
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.SnackbarResult
+import androidx.compose.material3.SwipeToDismiss
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberDismissState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.instagramnewsclient.MainViewModel
-import com.example.instagramnewsclient.domain.FeedPost
-import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun MainScreen(viewModel: MainViewModel) {
     Scaffold(
@@ -67,19 +61,44 @@ fun MainScreen(viewModel: MainViewModel) {
             }
         }
     ) {
-        val feedPost = viewModel.feedPost.observeAsState(FeedPost())
-
-        Column(
+        val feedPosts = viewModel.feedPosts.observeAsState(listOf())
+        LazyColumn(
             modifier = Modifier.padding(it)
         ) {
-            PostCard(
-                modifier = Modifier.padding(8.dp),
-                feedPost = feedPost.value,
-                onCommentClickListener = viewModel::updateAmount,
-                onLikeClickListener = viewModel::updateAmount,
-                onShareClickListener = viewModel::updateAmount,
-                onViewsClickListener = viewModel::updateAmount
-            )
+            items(
+                items = feedPosts.value,
+                key = { it.id }
+            ) { feedPost ->
+                val dismissedState = rememberDismissState()
+                if (dismissedState.isDismissed(DismissDirection.EndToStart)) {
+                    viewModel.remove(feedPost)
+                }
+
+                SwipeToDismiss(
+                    modifier = Modifier.animateItemPlacement(),
+                    state = dismissedState,
+                    directions = setOf(DismissDirection.EndToStart),
+                    background = {},
+                    dismissContent = {
+                        PostCard(
+                            modifier = Modifier.padding(8.dp),
+                            feedPost = feedPost,
+                            onCommentClickListener = { statisticItem ->
+                                viewModel.updateAmount(feedPost, statisticItem)
+                            },
+                            onLikeClickListener = { statisticItem ->
+                                viewModel.updateAmount(feedPost, statisticItem)
+                            },
+                            onShareClickListener = { statisticItem ->
+                                viewModel.updateAmount(feedPost, statisticItem)
+                            },
+                            onViewsClickListener = { statisticItem ->
+                                viewModel.updateAmount(feedPost, statisticItem)
+                            }
+                        )
+                    }
+                )
+            }
         }
     }
 }
