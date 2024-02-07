@@ -23,14 +23,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             InstagramNewsClientTheme {
-//                Box(
-//                    modifier = Modifier
-//                        .fillMaxSize()
-//                        .background(MaterialTheme.colorScheme.background)
-//                        .padding(8.dp)
-//                ) {
-//                    PostCard()
-//                }
                 MainScreen()
             }
         }

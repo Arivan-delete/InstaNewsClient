@@ -1,6 +1,7 @@
 package com.example.instagramnewsclient.ui.theme
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -27,41 +28,58 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.instagramnewsclient.R
+import com.example.instagramnewsclient.domain.FeedPost
+import com.example.instagramnewsclient.domain.StatisticItem
+import com.example.instagramnewsclient.domain.StatisticType
 
 @Composable
-fun PostCard() {
-    Card {
+fun PostCard(
+    modifier: Modifier = Modifier,
+    feedPost: FeedPost,
+    onStatisticsItemClickListener: (StatisticItem) -> Unit
+) {
+    Card(
+        modifier = modifier
+    ) {
         Column(
             modifier = Modifier
                 .padding(8.dp)
         ) {
-            PostHeader()
+            PostHeader(feedPost)
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = stringResource(R.string.template_text))
+            Text(
+                text = feedPost.contentText,
+                color = MaterialTheme.colorScheme.onPrimary
+            )
             Spacer(modifier = Modifier.height(8.dp))
             Image(
-                painter = painterResource(id = R.drawable.post_content_image),
+                painter = painterResource(id = feedPost.contentImgResId),
                 contentDescription = "",
                 contentScale = ContentScale.FillWidth,
                 modifier = Modifier
                     .fillMaxWidth()
-
+                    .height(200.dp)
             )
             Spacer(modifier = Modifier.height(8.dp))
-            Statistics()
+            Statistics(
+                statistics = feedPost.statistics,
+                onItemClickListener = onStatisticsItemClickListener
+            )
         }
     }
 }
 
 @Composable
-private fun PostHeader() {
+private fun PostHeader(
+    feedPost: FeedPost
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
     ) {
         Image(
-            painter = painterResource(id = R.drawable.post_comunity_thumbnail),
+            painter = painterResource(id = feedPost.avatarResId),
             contentDescription = "",
             modifier = Modifier
                 .size(50.dp)
@@ -72,12 +90,12 @@ private fun PostHeader() {
             modifier = Modifier.weight(1f)
         ) {
             Text(
-                text = "/dev/null",
+                text = feedPost.commName,
                 color = MaterialTheme.colorScheme.onPrimary
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = "14:00",
+                text = feedPost.publicationDate,
                 color = MaterialTheme.colorScheme.onSecondary
             )
         }
@@ -90,31 +108,68 @@ private fun PostHeader() {
 }
 
 @Composable
-private fun Statistics() {
+private fun Statistics(
+    statistics: List<StatisticItem>,
+    onItemClickListener: (StatisticItem) -> Unit
+) {
     Row {
         Row (
             modifier = Modifier.weight(1f)
         ){
-            IconWithText(iconResId = R.drawable.ic_views_count, text = "916")
+            val viewsItem = statistics.getItemByType(StatisticType.VIEWS)
+            IconWithText(
+                iconResId = R.drawable.ic_views_count,
+                text = viewsItem.amount.toString(),
+                onItemClickListener = {
+                    onItemClickListener(viewsItem)
+                }
+            )
         }
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier.weight(1f)
         ) {
-            IconWithText(iconResId = R.drawable.ic_share, text = "7")
-            IconWithText(iconResId = R.drawable.ic_comment, text = "12")
-            IconWithText(iconResId = R.drawable.ic_like, text = "20")
+            val shareItem = statistics.getItemByType(StatisticType.SHARES)
+            IconWithText(
+                iconResId = R.drawable.ic_share,
+                text = shareItem.amount.toString(),
+                onItemClickListener = {
+                    onItemClickListener(shareItem)
+                }
+            )
+            val commentsItem = statistics.getItemByType(StatisticType.COMMENTS)
+            IconWithText(
+                iconResId = R.drawable.ic_comment,
+                text = commentsItem.amount.toString(),
+                onItemClickListener = {
+                    onItemClickListener(commentsItem)
+                }
+            )
+            val likesItem = statistics.getItemByType(StatisticType.LIKES)
+            IconWithText(
+                iconResId = R.drawable.ic_like,
+                text = likesItem.amount.toString(),
+                onItemClickListener = {
+                    onItemClickListener(likesItem)
+                }
+            )
         }
     }
+}
+
+private fun List<StatisticItem>.getItemByType(type: StatisticType): StatisticItem {
+    return this.find { it.type == type } ?: throw IllegalStateException()
 }
 
 @Composable
 private fun IconWithText(
     iconResId: Int,
-    text: String
+    text: String,
+    onItemClickListener: () -> Unit
 ) {
     Row(
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.clickable { onItemClickListener() }
     ) {
         Icon(
             painter = painterResource(id = iconResId),
@@ -126,21 +181,5 @@ private fun IconWithText(
             text = text,
             color = MaterialTheme.colorScheme.onSecondary
         )
-    }
-}
-
-@Preview
-@Composable
-private fun PreviewLight() {
-    InstagramNewsClientTheme(darkTheme = false) {
-        PostCard()
-    }
-}
-
-@Preview
-@Composable
-private fun PreviewDark() {
-    InstagramNewsClientTheme(darkTheme = true) {
-        PostCard()
     }
 }
