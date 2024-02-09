@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.instagramnewsclient.domain.FeedPost
 import com.example.instagramnewsclient.domain.StatisticItem
+import com.example.instagramnewsclient.ui.theme.NavItem
 import java.util.Collections.replaceAll
 
 class MainViewModel: ViewModel() {
