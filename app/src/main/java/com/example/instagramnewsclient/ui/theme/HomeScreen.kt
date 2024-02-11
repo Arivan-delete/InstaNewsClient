@@ -1,5 +1,6 @@
 package com.example.instagramnewsclient.ui.theme
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
@@ -14,6 +15,8 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.instagramnewsclient.MainViewModel
+import com.example.instagramnewsclient.domain.FeedPost
+import com.example.instagramnewsclient.domain.PostComment
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
@@ -21,12 +24,44 @@ fun HomeScreen(
     viewModel: MainViewModel,
     paddingValues: PaddingValues
 ) {
-    val feedPosts = viewModel.feedPosts.observeAsState(listOf())
+    val screenState = viewModel.screenState.observeAsState(HomeScreenState.Initial)
+
+    when (val currentState = screenState.value) {
+        is HomeScreenState.Posts -> {
+            FeedPosts(
+                posts = currentState.posts,
+                viewModel = viewModel,
+                paddingValues = paddingValues
+            )
+        }
+        is HomeScreenState.Comments -> {
+            CommentsScreen(
+                feedPost = currentState.feedPost,
+                comments = currentState.comments,
+                onBackPressed = {
+                    viewModel.closeComments()
+                }
+            )
+            BackHandler {
+                viewModel.closeComments()
+            }
+        }
+        HomeScreenState.Initial -> {}
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@Composable
+private fun FeedPosts(
+    posts: List<FeedPost>,
+    viewModel: MainViewModel,
+    paddingValues: PaddingValues
+) {
     LazyColumn(
         modifier = Modifier.padding(paddingValues)
     ) {
         items(
-            items = feedPosts.value,
+            items = posts,
             key = { it.id }
         ) { feedPost ->
             val dismissedState = rememberDismissState()
@@ -43,8 +78,8 @@ fun HomeScreen(
                     PostCard(
                         modifier = Modifier.padding(8.dp),
                         feedPost = feedPost,
-                        onCommentClickListener = { statisticItem ->
-                            viewModel.updateAmount(feedPost, statisticItem)
+                        onCommentClickListener = {
+                            viewModel.showComments(feedPost)
                         },
                         onLikeClickListener = { statisticItem ->
                             viewModel.updateAmount(feedPost, statisticItem)
