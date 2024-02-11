@@ -3,7 +3,6 @@ package com.example.instagramnewsclient
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import com.example.instagramnewsclient.ui.theme.InstagramNewsClientTheme
 import com.example.instagramnewsclient.ui.theme.MainScreen
 

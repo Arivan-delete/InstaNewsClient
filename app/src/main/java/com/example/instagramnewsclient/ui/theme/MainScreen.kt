@@ -18,8 +18,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.example.instagramnewsclient.NewsFeedViewModel
 import com.example.instagramnewsclient.domain.FeedPost
 import com.example.instagramnewsclient.navigation.AppNavGraph
 import com.example.instagramnewsclient.navigation.rememberNavState
@@ -28,24 +28,27 @@ import com.example.instagramnewsclient.navigation.rememberNavState
 fun MainScreen() {
     val navState = rememberNavState()
 
-    val commentsToPost: MutableState<FeedPost?> = remember {
-        mutableStateOf(null)
-    }
-
     Scaffold(
         bottomBar = {
             NavigationBar {
                 val navBackStackEntry by navState.navHostController.currentBackStackEntryAsState()
-                val currentRoute = navBackStackEntry?.destination?.route
+
                 val items = listOf(
                     NavItem.Home,
                     NavItem.Favorite,
                     NavItem.Profile
                 )
                 items.forEach { item ->
+                    val selected = navBackStackEntry?.destination?.hierarchy?.any {
+                        it.route == item.screen.route
+                    } ?: false
                     NavigationBarItem(
-                        selected = currentRoute == item.screen.route,
-                        onClick = { navState.navigateTo(item.screen.route) },
+                        selected = selected,
+                        onClick = {
+                            if (!selected) {
+                                navState.navigateTo(item.screen.route)
+                            }
+                        },
                         icon = {
                             Icon(item.icon, contentDescription = null)
                         },
@@ -65,20 +68,19 @@ fun MainScreen() {
     ) { paddingValues ->
         AppNavGraph(
             navHostController = navState.navHostController,
-            homeScreenContent = {
-                if (commentsToPost.value == null) {
-                    HomeScreen(
-                        paddingValues = paddingValues,
-                        onCommentClickListener = {
-                            commentsToPost.value = it
-                        }
-                    )
-                } else {
-                    CommentsScreen(
-                        feedPost = commentsToPost.value!!,
-                        onBackPressed = { commentsToPost.value = null }
-                    )
-                }
+            newsFeedScreenContent = {
+                HomeScreen(
+                    paddingValues = paddingValues,
+                    onCommentClickListener = {
+                        navState.navigateToComment(it)
+                    }
+                )
+            },
+            commentsScreenContent = {feedPost ->
+                CommentsScreen(
+                    feedPost = feedPost,
+                    onBackPressed = { navState.navHostController.popBackStack() }
+                )
             },
             favoriteScreenContent = { TextCounter(name = "Favorite") },
             profileScreenContent = { TextCounter(name = "Profile") }
