@@ -1,31 +1,24 @@
 package com.example.instagramnewsclient.presentation.comments
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import android.app.Application
 import androidx.lifecycle.ViewModel
-import com.example.instagramnewsclient.domain.FeedPost
-import com.example.instagramnewsclient.domain.PostComment
+import com.example.instagramnewsclient.data.repository.NewsFeedRepositoryImpl
+import com.example.instagramnewsclient.domain.entity.FeedPost
+import com.example.instagramnewsclient.domain.usecases.GetCommentsUseCase
+import kotlinx.coroutines.flow.map
 
 class CommentsViewModel(
-    feedPost: FeedPost
+    feedPost: FeedPost,
+    application: Application
 ): ViewModel() {
 
-    private val _screenState = MutableLiveData<CommentsScreenState>(CommentsScreenState.Initial)
-    val screenState: LiveData<CommentsScreenState> = _screenState
-
-    init {
-        loadComments(feedPost)
-    }
-
-    private fun loadComments(feedPost: FeedPost) {
-        val comments = mutableListOf<PostComment>().apply {
-            repeat(10) {
-                add(PostComment(id = it))
-            }
+    private val repository = NewsFeedRepositoryImpl(application)
+    private val getCommentsUseCase = GetCommentsUseCase(repository)
+    val screenState = repository.getComments(feedPost)
+        .map {
+            CommentsScreenState.Comments(
+                feedPost = feedPost,
+                comments = it
+            )
         }
-        _screenState.value = CommentsScreenState.Comments(
-            feedPost = feedPost,
-            comments = comments
-        )
-    }
 }

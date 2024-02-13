@@ -1,4 +1,4 @@
-package com.example.instagramnewsclient.presentation.main
+package com.example.instagramnewsclient.domain.entity
 
 sealed class AuthState {
 

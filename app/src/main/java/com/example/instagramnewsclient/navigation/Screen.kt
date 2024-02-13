@@ -1,7 +1,7 @@
 package com.example.instagramnewsclient.navigation
 
 import android.net.Uri
-import com.example.instagramnewsclient.domain.FeedPost
+import com.example.instagramnewsclient.domain.entity.FeedPost
 import com.google.gson.Gson
 
 sealed class Screen(

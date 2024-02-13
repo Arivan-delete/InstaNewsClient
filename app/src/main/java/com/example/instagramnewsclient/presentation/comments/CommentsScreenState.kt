@@ -1,7 +1,7 @@
 package com.example.instagramnewsclient.presentation.comments
 
-import com.example.instagramnewsclient.domain.FeedPost
-import com.example.instagramnewsclient.domain.PostComment
+import com.example.instagramnewsclient.domain.entity.FeedPost
+import com.example.instagramnewsclient.domain.entity.PostComment
 
 sealed class CommentsScreenState {
 
