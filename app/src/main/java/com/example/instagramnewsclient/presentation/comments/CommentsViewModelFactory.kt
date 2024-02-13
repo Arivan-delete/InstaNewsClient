@@ -1,4 +1,4 @@
-package com.example.instagramnewsclient
+package com.example.instagramnewsclient.presentation.comments
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

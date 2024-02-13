@@ -1,4 +1,4 @@
-package com.example.instagramnewsclient.ui.theme
+package com.example.instagramnewsclient.samples
 
 import android.os.Handler
 import androidx.compose.foundation.layout.Column

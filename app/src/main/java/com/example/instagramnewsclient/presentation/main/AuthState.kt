@@ -1,4 +1,4 @@
-package com.example.instagramnewsclient.ui.theme
+package com.example.instagramnewsclient.presentation.main
 
 sealed class AuthState {
 

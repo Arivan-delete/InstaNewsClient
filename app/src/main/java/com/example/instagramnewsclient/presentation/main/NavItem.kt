@@ -1,7 +1,6 @@
-package com.example.instagramnewsclient.ui.theme
+package com.example.instagramnewsclient.presentation.main
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Person

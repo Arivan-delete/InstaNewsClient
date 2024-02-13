@@ -1,7 +1,6 @@
-package com.example.instagramnewsclient.ui.theme
+package com.example.instagramnewsclient.presentation.comments
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -25,17 +24,14 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.instagramnewsclient.CommentsViewModel
-import com.example.instagramnewsclient.CommentsViewModelFactory
 import com.example.instagramnewsclient.domain.FeedPost
 import com.example.instagramnewsclient.domain.PostComment
+import com.example.instagramnewsclient.ui.theme.InstagramNewsClientTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

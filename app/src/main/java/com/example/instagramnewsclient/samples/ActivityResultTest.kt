@@ -1,4 +1,4 @@
-package com.example.instagramnewsclient.ui.theme
+package com.example.instagramnewsclient.samples
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult

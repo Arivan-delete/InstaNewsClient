@@ -1,11 +1,10 @@
-package com.example.instagramnewsclient
+package com.example.instagramnewsclient.presentation.comments
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.instagramnewsclient.domain.FeedPost
 import com.example.instagramnewsclient.domain.PostComment
-import com.example.instagramnewsclient.ui.theme.CommentsScreenState
 
 class CommentsViewModel(
     feedPost: FeedPost

@@ -1,11 +1,10 @@
-package com.example.instagramnewsclient
+package com.example.instagramnewsclient.presentation.news
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.instagramnewsclient.domain.FeedPost
 import com.example.instagramnewsclient.domain.StatisticItem
-import com.example.instagramnewsclient.ui.theme.NewsFeedScreenState
 
 class NewsFeedViewModel: ViewModel() {
 

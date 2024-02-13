@@ -1,4 +1,4 @@
-package com.example.instagramnewsclient.ui.theme
+package com.example.instagramnewsclient.presentation.comments
 
 import com.example.instagramnewsclient.domain.FeedPost
 import com.example.instagramnewsclient.domain.PostComment
