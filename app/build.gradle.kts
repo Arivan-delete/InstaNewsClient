@@ -58,6 +58,8 @@ dependencies {
     implementation("androidx.compose.runtime:runtime-livedata:1.6.0")
     implementation("androidx.navigation:navigation-compose:2.7.7")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$2.7.0")
+    implementation("com.vk:android-sdk-core:4.1.0")
+    implementation("com.vk:android-sdk-api:4.1.0")
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("androidx.compose.ui:ui")
     implementation("io.coil-kt:coil-compose:2.5.0")
